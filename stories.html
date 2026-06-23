@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Stories — CodePath × Claude</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --navy:       #1B1C57;
+    --navy-2:     #062F54;
+    --green:      #00C385;
+    --white:      #FFFFFF;
+    --periwinkle: #4F5DFF;
+    --sky:        #E9F6FF;
+    --bg:         #F5F6FA;
+    --card:       #FFFFFF;
+    --text:       #1B1C57;
+    --muted:      #8B90B8;
+    --shadow-sm:  0 1px 4px rgba(27,28,87,0.06), 0 4px 20px rgba(27,28,87,0.05);
+    --shadow-md:  0 8px 32px rgba(27,28,87,0.11), 0 2px 8px rgba(27,28,87,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    text-align: center;
+    padding: 72px 20px 64px;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 22px;
+    opacity: 0.9;
+  }
+
+  .hero h1 {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(28px, 5vw, 54px);
+    font-weight: 700;
+    line-height: 1.12;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em {
+    color: var(--green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: clamp(14px, 1.6vw, 17px);
+    color: rgba(255,255,255,0.5);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    max-width: 1160px;
+    margin: 40px auto 28px;
+    padding: 0 24px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 180px;
+  }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    background: var(--white);
+    border: none;
+    border-radius: 100px;
+    box-shadow: var(--shadow-sm);
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: box-shadow 0.2s;
+  }
+
+  .search-input:focus { box-shadow: 0 0 0 2px var(--periwinkle), var(--shadow-sm); }
+  .search-input::placeholder { color: var(--muted); }
+
+  .filter-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .filter-btn {
+    padding: 8px 15px;
+    border-radius: 100px;
+    border: none;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover { color: var(--navy); box-shadow: var(--shadow-md); }
+  .filter-btn.active { background: var(--navy); color: #fff; box-shadow: none; }
+
+  /* ── GRID ── */
+  .grid {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    columns: 3;
+    column-gap: 18px;
+  }
+
+  @media (max-width: 900px) { .grid { columns: 2; } }
+  @media (max-width: 560px) { .grid { columns: 1; } }
+
+  /* ── CARD ── */
+  .card {
+    break-inside: avoid;
+    background: var(--card);
+    border-radius: 20px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.22s cubic-bezier(.25,.46,.45,.94), box-shadow 0.22s;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-video-embed {
+    position: relative;
+    padding-bottom: 56.25%;
+    background: var(--navy);
+  }
+
+  .card-video-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .card-video-placeholder {
+    position: relative;
+    padding-bottom: 56.25%;
+    background: linear-gradient(145deg, #0F1040 0%, var(--navy) 100%);
+    overflow: hidden;
+  }
+
+  .card-video-placeholder-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .play-circle {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.18s;
+  }
+
+  .card:hover .play-circle { background: rgba(0,195,133,0.18); border-color: var(--green); }
+  .play-circle svg { margin-left: 3px; }
+
+  .placeholder-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .card-body { padding: 22px; }
+
+  .card-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .card-course {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--sky);
+    color: var(--periwinkle);
+  }
+
+  .card-quote {
+    font-size: 14px;
+    line-height: 1.68;
+    color: #3A3C6E;
+    font-weight: 400;
+    font-style: italic;
+    margin-top: 14px;
+  }
+
+  .card-quote::before {
+    content: '\201C';
+    font-size: 28px;
+    line-height: 0;
+    vertical-align: -10px;
+    color: var(--green);
+    font-style: normal;
+    margin-right: 3px;
+    font-family: Georgia, serif;
+  }
+
+  .cat-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 14px; }
+
+  .tag {
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .tag-built   { background: #FFF0E6; color: #B84500; }
+  .tag-ships   { background: #EEEEFF; color: #3340CC; }
+  .tag-learns  { background: #E6FBF3; color: #006B4A; }
+  .tag-arch    { background: #F4EEFF; color: #7820C8; }
+  .tag-oss     { background: #E5F5FF; color: #005E99; }
+
+  .card-footer {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    color: var(--periwinkle);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.8;
+    transition: opacity 0.15s;
+  }
+
+  .read-more-btn:hover { opacity: 1; }
+
+  .card-links { display: flex; gap: 7px; margin-top: 14px; flex-wrap: wrap; }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: #F0FFF8;
+    color: #007A54;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .card-link:hover { background: #CCFAEC; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,16,48,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s;
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--white);
+    border-radius: 24px;
+    max-width: 660px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(15,16,48,0.2);
+    transform: scale(0.97) translateY(12px);
+    transition: transform 0.25s cubic-bezier(.25,.46,.45,.94);
+  }
+
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+  .modal-header {
+    padding: 24px 24px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: var(--white);
+    z-index: 1;
+    border-bottom: 1px solid #ECEEF6;
+  }
+
+  .modal-name { font-size: 18px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+
+  .modal-course-badge {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--sky);
+    color: var(--periwinkle);
+  }
+
+  .modal-close {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .modal-close:hover { background: #ECEEF6; color: var(--navy); }
+
+  .modal-body { padding: 24px; }
+
+  .modal-video {
+    position: relative;
+    padding-bottom: 56.25%;
+    background: var(--navy);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .modal-video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .modal-text {
+    font-size: 15px;
+    line-height: 1.82;
+    color: #4A4D7E;
+    white-space: pre-wrap;
+  }
+
+  .modal-links { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+
+  .modal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    border-radius: 100px;
+    background: #F0FFF8;
+    color: #007A54;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .modal-link:hover { background: #CCFAEC; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 32px 20px;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.03em;
+  }
+
+  .footer strong { color: var(--navy); font-weight: 600; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #DDE0F0; border-radius: 4px; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-eyebrow">Summer 2026 · CodePath × Anthropic</div>
+  <h1>Students who built<br><em>something real</em></h1>
+  <p class="hero-sub">Real stories from CodePath students on how Claude changed what they dared to build — and how they learned.</p>
+</section>
+
+<!-- ── CONTROLS ── -->
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input class="search-input" type="text" placeholder="Search stories…" id="search" />
+  </div>
+  <div class="filter-btns">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="built">🔨 Built Something</button>
+    <button class="filter-btn" data-filter="ships">🚀 Ships Faster</button>
+    <button class="filter-btn" data-filter="learns">📚 Learns Faster</button>
+    <button class="filter-btn" data-filter="arch">🏗️ Architecture Partner</button>
+    <button class="filter-btn" data-filter="oss">🌐 Open Source</button>
+    <button class="filter-btn" data-filter="video">📹 Video</button>
+  </div>
+</div>
+
+<!-- ── GRID ── -->
+<div class="grid" id="grid"></div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <div class="modal-name-wrap">
+        <div class="modal-name" id="modal-name"></div>
+        <div id="modal-course-badge" class="modal-course-badge hidden"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-video hidden" id="modal-video-wrap">
+        <iframe id="modal-iframe" allowfullscreen allow="autoplay; fullscreen"></iframe>
+      </div>
+      <p class="modal-text" id="modal-text"></p>
+      <div class="modal-links" id="modal-links"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <strong>CodePath</strong> × Anthropic &nbsp;·&nbsp; Summer 2026
+</footer>
+
+<script>
+const CAT_LABELS = {
+  built:  { tag: 'tag-built',  label: '🔨 Built Something' },
+  ships:  { tag: 'tag-ships',  label: '🚀 Ships Faster' },
+  learns: { tag: 'tag-learns', label: '📚 Learns Faster' },
+  arch:   { tag: 'tag-arch',   label: '🏗️ Architecture Partner' },
+  oss:    { tag: 'tag-oss',    label: '🌐 Open Source' },
+};
+
+const stories = [
+  {
+    name: "Fareed Fareed-Uddin",
+    course: "",
+    categories: ["built", "learns"],
+    quote: "This is something I likely would not have attempted without the support of the course and access to Claude.",
+    type: "story+project",
+    story: `What got me hooked was the hands-on learning experience. I learn best by building, so being able to create real projects made a huge difference for me.
+
+The project I'm most proud of is my final project, AgendaBot. It uses RAG and an agentic loop to help make the daunting task of planning work easier, so users can spend less time optimizing time slots and more time actually getting work done. This is something I likely would not have attempted without the support of the course and access to Claude.
+
+I applied for the second AI course because I want to continue polishing my skills and expanding what I can build with AI to solve everyday problems.`,
+    links: [
+      { label: "GitHub: AgendaBot", url: "https://github.com/fareedom1/AgendaBot" },
+      { label: "Live App", url: "https://agendabot.streamlit.app" }
+    ]
+  },
+  {
+    name: "Nathan Christopher Tam",
+    course: "",
+    categories: ["oss", "learns"],
+    quote: "I was intimidated by contributing to larger code bases — now I find myself contributing on a more regular basis.",
+    type: "story",
+    story: `For me, Claude has been super useful in helping me learn new things and contribute to larger code bases. Before having access to Claude, I was intimidated by contributing to larger code bases like for many open source projects, but now I find myself contributing on a more regular basis and am more confident that the changes I'm making are maintainable and useful for the long term.
+
+One thing that I really love doing is just chatting with Claude while I'm taking notes. Claude has truly helped my learning to a great extent, acting as a teacher that answers questions, gives examples and visualizations. Instead of just trusting an article inherently, Claude allows me to trust what I'm learning through explaining the logic in a way that clicks — which I feel like is the essence of learning.`
+  },
+  {
+    name: "Sreytouch Lang",
+    course: "",
+    categories: ["learns"],
+    quote: "Claude became something I could use to think through problems, understand concepts faster, and feel more confident.",
+    type: "story",
+    story: `Taking AI with CodePath has honestly been a really helpful experience for me. In the spring, I started to see Claude as more than just a tool for quick answers. It became something I could use to think through problems, understand concepts faster, and improve the way I approach building projects.
+
+This summer, I came back because I wanted to keep learning and get more hands-on practice. One thing that really clicked for me was using Claude as a learning partner while coding. It helped me break down confusing problems, debug faster, and feel more confident trying ideas I may not have attempted on my own.
+
+Overall, having access to Claude tools made learning feel less intimidating and more interactive. It helped me stay motivated and continue growing as a software engineer.`
+  },
+  {
+    name: "Soja Sunny",
+    course: "",
+    categories: ["built", "ships"],
+    quote: "Instead of getting stuck on an error for hours, Claude felt like a collaborative partner that helped me think through the architecture.",
+    type: "story+project",
+    story: `Coming back this summer for the advanced application course felt like a natural next step after finishing the foundations class this spring. Before this year, I wouldn't have attempted building a full Retrieval-Augmented Generation (RAG) system like DocuBot entirely on my own.
+
+Having access to Claude and Claude Code completely changed my workflow — especially when debugging complex Python pipelines or figuring out how to properly index and ground data for retrieval. Instead of getting stuck on an error for hours, Claude felt like a collaborative partner that helped me think through the architecture and logic. It genuinely accelerated how fast I could learn and apply AI engineering concepts.`
+  },
+  {
+    name: "Dominion Eze",
+    course: "",
+    categories: ["built"],
+    quote: "Since I got into working with Claude, I have been able to bring those ideas into life and dare to think of even greater ideas.",
+    type: "story",
+    story: `I took the AI110 class this past spring and I chose to come back for the AI201 advanced class because I seek to learn more on AI Engineering, and how to effectively build and solve problems with Claude as an assistant.
+
+I have been learning to code and grow in CS, and I had project ideas — since I got into working with Claude, I have been able to bring those ideas into life and have dared to even think of greater ideas. Since Claude is very good in writing code, I have been more focused on the architectural, design and prompting part of all my projects, so it develops into exactly what I had in mind.
+
+Hands-on learning with Claude has pushed me to think more critically on how I want to build, what I want to build and the scale on which I plan to build. This is one of my favorite courses so far.`
+  },
+  {
+    name: "Branden Bedoya",
+    course: "",
+    categories: ["built", "ships"],
+    quote: "Getting access to Claude Pro has been a game changer. I switched from ChatGPT to Gemini to Claude and each step has been a huge upgrade.",
+    type: "story",
+    story: `Getting access to Claude Pro has been a game changer for me. I switched from ChatGPT to Gemini and now to Claude and each step has been a huge upgrade.
+
+I got to learn about AI Agents and build 3 websites along with prepare beautifully designed and in-depth presentations for an interview take-home assignment using Claude.
+
+I'm now a huge supporter of Agents and building with Claude thanks to this partnership with CodePath.`
+  },
+  {
+    name: "Yarina Cspro",
+    course: "",
+    categories: ["built", "learns"],
+    quote: "Claude helps me find exactly where my understanding breaks down — not just hands me the answer.",
+    type: "story+project",
+    story: `The moment that stands out most wasn't a project. It was a conversation. I shared some rough ideas about my career direction with Claude — where I wanted to go and what I was thinking about. It helped me see the gaps: what I was missing and what I should prioritize. That conversation is actually why I'm back this summer.
+
+Claude pointed out that contributing to production-grade projects mattered more for where I'm headed than grinding LeetCode, and that's what AI201 offers. So I enrolled.
+
+I also built things I wouldn't have tried alone — a music recommendation site using RAG and a secondhand fashion shopping agent. But the bigger shift was in how I learn. Before, I'd get stuck on something and stay stuck. Now I talk through it. Claude helps me find exactly where my understanding breaks down, not just hands me the answer.`
+  },
+  {
+    name: "Afnan Adit",
+    course: "",
+    categories: ["built", "arch"],
+    quote: "It felt less like using a search engine and more like collaborating with a technical partner who could challenge my assumptions.",
+    type: "story+project",
+    story: `Before this project, I probably would not have attempted to build a retrieval-augmented generation (RAG) system. I was comfortable developing rule-based applications, but combining a large language model with an existing recommendation engine felt much more challenging. Working with Claude helped me break the problem into smaller, manageable steps.
+
+The biggest shift came during the system design phase. My initial instinct was to let the AI handle everything. Through discussions with Claude, I realized it was more effective to separate responsibilities — Gemini could interpret natural language requests while my existing weighted scoring system remained responsible for retrieval and ranking.
+
+Access to AI changed the way I learned. It felt less like using a search engine and more like collaborating with a technical partner who could challenge my assumptions.
+
+The result: a gym equipment recommender that combines traditional recommendation logic, natural language understanding, guardrails, and RAG within a single system.`
+  },
+  {
+    name: "Yu-Wei Tseng",
+    course: "",
+    categories: ["built", "arch", "ships"],
+    quote: "Claude collapsed that gap — letting me iterate at the speed of ideas instead of the speed of typing.",
+    type: "story+project",
+    story: `Before the AI courses, I had ideas for systems (multi-agent orchestration, RAG pipelines, distributed brokers) but I'd look at the architecture and think, "That's a team-sized project, not a solo one." Claude collapsed that gap. Not by writing code for me, but by being a thinking partner that let me iterate at the speed of ideas instead of the speed of typing.
+
+The concrete example: I built a 5-server, 62-tool AI agent integration platform. The architecture decisions (dual transport, dependency injection, per-session isolation) were mine. But Claude let me explore three design approaches in an afternoon instead of a week.
+
+The moment that clicked for me was realizing I wasn't using Claude as a shortcut. I was using it as leverage. I still had to understand every line, debug the hard problems, and make judgment calls. But I could operate at a level of complexity that would have taken me years more experience to reach alone.`
+  },
+  {
+    name: "Amirjon Ulmasov",
+    course: "",
+    categories: ["built", "ships"],
+    quote: "Claude is like having a senior engineer available at 2am. We won first place at MEGA Hackathon 2026.",
+    type: "story+project",
+    story: `Claude is like having a senior engineer available at 2am. It has helped me improve on how I think about system design and helps make decisions when things are ambiguous.
+
+At MEGA Hackathon 2026, I built JusticeMap, a RAG pipeline that helps people navigate the legal system. Claude helped me move fast within the 24 hours — creating complex features, debugging faster, and not just creating a submission, but a product that's both functional and useful. We won first place.
+
+Also, during my first few weeks at my internship, Claude has helped me get up to speed on my new codebase and new technology fast enough that I was already shipping real features in my first week. It has increased my productivity by a lot.`
+  },
+  {
+    name: "James Paek",
+    course: "",
+    categories: ["learns", "built"],
+    quote: "Claude did not just give me answers. It helped me ask better questions.",
+    type: "video+story",
+    videoUrl: "https://drive.google.com/file/d/1MGXGEFp-gduxxiNzjDAnR7JF5Q2Ci2T2/preview",
+    story: `Coming into AI 110 as a student, I found Claude made a big difference in how I approached learning and building. One project where it really helped me was my Music Discovery Agent. Before using Claude, I probably would have kept the project much smaller or avoided some of the harder parts.
+
+What stood out to me most was that Claude did not just give me answers. It helped me ask better questions. When I was working through confidence scoring and recommendation logic, Claude gave me ideas that helped me think more clearly — while also pushing me to review its suggestions critically.
+
+Now that I am back as a TF, I notice students using Claude in a similar way. The biggest difference is that students are more willing to start. Having access to Claude made AI 110 feel more approachable and more creative. It gave me the confidence to build something more ambitious, and now I get to help students learn how to use it responsibly and effectively, too.`
+  },
+  {
+    name: "Yuliana Jasso",
+    course: "",
+    categories: ["built"],
+    quote: "Yuliana shared her CodePath × Claude experience in a video testimonial.",
+    type: "video",
+    videoUrl: "https://drive.google.com/file/d/1Bc3A_Mp5QLAQEOt9gKu6j0sniJfmMiu1/preview",
+    story: "Yuliana shared her CodePath × Claude experience in a video testimonial."
+  },
+  {
+    name: "Francis Lufwendo",
+    course: "",
+    categories: ["built", "ships"],
+    quote: "Francis documented his full experience and built a project — watch the video or read the full story.",
+    type: "video+story",
+    videoUrl: "https://drive.google.com/file/d/1W-ZAZLyPxoAOzbEqElxHAcHuLtAZAwZg/preview",
+    story: "Francis documented his full experience in a written story and also recorded a video testimonial, plus a short demo of his project.",
+    links: [
+      { label: "Full Written Story", url: "https://docs.google.com/document/d/1hi6VQTVRgLibotww3pSp5xkfkDwNgiR5ouckp5lGcUc/edit?usp=sharing" },
+      { label: "Demo Video", url: "https://drive.google.com/file/d/13xxIX55ucb6Vaf9xOaunTPZZjXyysWXK/view?usp=sharing" }
+    ]
+  },
+  {
+    name: "Shawn Blackman",
+    course: "",
+    categories: ["built", "ships"],
+    quote: "Shawn built the Scuderia Pit Wall Orchestrator — watch the video to hear how Claude made it possible.",
+    type: "video+story",
+    videoUrl: "https://drive.google.com/file/d/1-YCDdMBz40701_wjdRnjdxgw_z49jdq-/preview",
+    story: "Shawn built a Scuderia Pit Wall Orchestrator and shared a video testimonial about his experience with CodePath and Claude.",
+    links: [
+      { label: "GitHub Project", url: "https://github.com/sh4wnbk/scuderia-pit-wall-orchestrator" }
+    ]
+  },
+  {
+    name: "Venancio Sevilla",
+    course: "",
+    categories: ["learns", "ships"],
+    quote: "It dramatically lowers the barrier between learning and building. Instead of spending days figuring out where to start, I can spend that time creating.",
+    type: "story",
+    story: `AI, Claude, and CodePath in general have had a huge impact on my experience as both a student and an aspiring software engineer.
+
+My main point is the efficiency of having an active AI copilot alongside my workflow. Before, I would spend hours watching tutorials, Googling solutions, and digging through documentation just to fix a bug or implement a feature.
+
+Claude's strongest feature is its ability to communicate clearly after understanding the context of my project. It can read my files and explain concepts directly within the codebase I'm working on. I can explain where I'm confused, and it gets straight to the point.
+
+It has also given me the confidence to pursue personal projects that I never would have attempted by myself. For me, the biggest value isn't that AI writes code for me — it's that it dramatically lowers the barrier between learning and building.`
+  },
+  {
+    name: "Carolina Aldana",
+    course: "",
+    categories: ["learns", "built"],
+    quote: "Claude felt like a study partner. It gave me the confidence to work on projects beyond my current level while still understanding the logic.",
+    type: "story+project",
+    story: `When I took Foundations of AI Engineering, I learned how to decide when to use AI, how to guide it, and how to check its output — not just to code faster, but to code more thoughtfully.
+
+In the Game Glitch Investigator project, I found several issues on my own. Instead of asking Claude to fix everything at once, I used it to understand why those bugs were happening. Its explanations made it easier to break problems into smaller parts.
+
+Once I understood the issues better, I used separate chat sessions with Claude to refactor specific parts of the code, and then reviewed the diffs for every change. This helped me become more confident in debugging and more careful when working with AI-generated code.
+
+Overall, Claude felt like a study partner. It gave me the confidence to work on projects beyond my current level while still understanding the logic.`
+  },
+  {
+    name: "Yie Sheng Chen",
+    course: "",
+    categories: ["built", "learns"],
+    quote: "Claude enabled me to develop software at a more abstract level — I got to build things I actually want to use.",
+    type: "story",
+    story: `We are at an exciting moment. With Claude Code, I got to build a reference tree and a Facebook ghost interface that I wanted to try for a long time.
+
+The moment Claude changed how I approach software engineering is that I get to build software in larger scale and build software that I actually want to use — then accumulate data from my usage and encounter bugs through extended use. Claude enabled me to develop software at maybe a more abstract level.
+
+Like what I read about Mark Cuban's framework — there are Learners, who use LLMs to expand their knowledge, ask deep questions, and analyze information. And Non-Learners, who use AI to do the work for them, bypassing thinking. The CodePath courses put you firmly in the Learner category.`
+  },
+  {
+    name: "Mustapha Bouchaqour",
+    course: "",
+    categories: ["built", "arch"],
+    quote: "Claude didn't just help me write code — it helped me think like a systems designer.",
+    type: "story+project",
+    story: `I never would have attempted building a full agentic AI system on my own. What started as a simple rule-based music recommender from class turned into a conversational web app — complete with Claude Haiku integration, a 10,020-song catalog, user authentication with PBKDF2 password hashing, session management, account lockout logic, personalized recommendations from user history, and a 70-test suite.
+
+The biggest shift came when I was deciding whether to let Claude generate song recommendations directly. Claude pushed me to think differently: if the model hallucinates a song title, how would a user ever know? That conversation led me to the agentic tool-use pattern — Claude interprets the natural language request, then calls my deterministic scoring engine to produce the actual results. Every recommendation became auditable.
+
+Claude didn't just help me write code — it helped me think like a systems designer.`,
+    links: [
+      { label: "GitHub Project", url: "https://github.com/MBouchaqour/applied-music-recommender-simulation-system-project" }
+    ]
+  },
+  {
+    name: "Richard S",
+    course: "",
+    categories: ["ships", "learns"],
+    quote: "I have seen how valuable Claude can be when used correctly for quick prototyping, iteration, and step-by-step learning.",
+    type: "story",
+    story: `As someone who completed their MS in CS from Georgia Institute of Technology while Generative AI was just becoming mainstream, and currently finishing up my MS in Information Technology Management — I was always reluctant to utilize these services due to ethical and hallucination concerns.
+
+Having used Claude throughout both AI110, AI201 and WEB103, I have seen how valuable a tool GenAI, and in particular Claude, can be when used correctly for quick prototyping, iteration, and even creating a step-by-step guide for completing an assignment.`
+  },
+  {
+    name: "Pegah Zargarian",
+    course: "",
+    categories: ["built", "arch"],
+    quote: "It didn't replace my thinking; it helped me think more clearly.",
+    type: "video+story",
+    videoUrl: "https://www.loom.com/embed/e148c583e8c64dd8884f8da31bff09d1",
+    story: `I started using Claude almost two years ago. At first, I found it fascinating, but later, while building real AI projects, it started to feel like an actual thinking partner.
+
+One project I probably wouldn't have attempted on my own was an accessibility browser extension during my AI engineering co-op, designed to help people with accessibility needs. Claude changed my approach when the project felt too big and messy: instead of trying to solve everything at once, I gave it the full context — the goal, the constraints, what I had tried, and what confused me — and used its perspective to compare options, think through the tech stack, and break the work into smaller steps.
+
+It didn't replace my thinking; it helped me think more clearly. More than anything, having access to it made me more confident as a learner and a builder.`
+  },
+  {
+    name: "Nick-Aurel Mugirashaka",
+    course: "",
+    categories: ["learns", "built"],
+    quote: "Claude helped me become a more independent learner and gave me the confidence to build things I wouldn't have tried before.",
+    type: "story",
+    story: `Before I took CodePath's AI courses, I mostly thought of AI as something that could answer questions. Over time, it became a lot more than that. I started using Claude as a learning partner whenever I got stuck.
+
+When I was learning about password hashing, it didn't just hand me the answer. It walked me through why hashing works, why salts matter, and what actually makes password storage secure. Once those ideas clicked, I was able to finish the implementation on my own.
+
+I also joined several hackathons where my teams built AI-powered tools under tight deadlines. One was an AI study assistant that helped students organize course materials. Claude helped us understand APIs we had never used, troubleshoot bugs, and move faster.
+
+As an international student, one thing I really appreciated was having a tool I could ask questions at any time without worrying about whether they sounded basic. That made learning feel more approachable.`
+  },
+  {
+    name: "Angel Coronel",
+    course: "",
+    categories: ["built"],
+    quote: "Angel shared their CodePath × Claude experience in a video story.",
+    type: "video",
+    videoUrl: "https://www.loom.com/embed/61cdc7d2045d4f82b3c9fc046e5021c5",
+    story: "Angel shared their CodePath × Claude experience in a video story."
+  },
+  {
+    name: "Jia TT",
+    course: "",
+    categories: ["built"],
+    quote: "The tools provided have allowed me to facilitate my ideas and turn them into reality in ways I hadn't previously thought possible.",
+    type: "story",
+    story: `Working with Anthropic has truly opened a new door for me. The tools provided have allowed me to facilitate my ideas and turn them into reality in ways I hadn't previously thought possible.
+
+Having access to these resources has significantly changed my learning process and made me more confident in my ability to engineer AI-native solutions.`
+  },
+  {
+    name: "Susie Marrero",
+    course: "",
+    categories: ["learns"],
+    quote: "Access to Claude made learning more approachable and helped me grow both as a student and now as a mentor.",
+    type: "story",
+    story: `As both a former AI 110 student and now a Technical Fellow, I've seen Claude's impact from two perspectives. As a CodePath student, it helped me break down complex problems and gave me the confidence to tackle projects I wouldn't have attempted otherwise. I even used it to help me in a project for school!
+
+As a TF, I've watched students use it to learn concepts more deeply, think critically, and become more independent problem-solvers. Access to Claude made learning more approachable and helped me grow both as a student and now as a mentor.
+
+I think Claude is a force to be reckoned with amongst the AI assistants!`
+  },
+  {
+    name: "Sudhira Chegu",
+    course: "",
+    categories: ["built"],
+    quote: "Sudhira shared their CodePath × Claude experience in a YouTube video.",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/4yKUKa-3mwk",
+    story: "Sudhira shared their CodePath × Claude experience in a YouTube video."
+  },
+  {
+    name: "David Song",
+    course: "",
+    categories: ["built"],
+    quote: "David shared his CodePath × Claude experience in a recorded video testimonial.",
+    type: "video",
+    videoUrl: "https://drive.google.com/file/d/1DbLXTu0u0bcrmvGpTnvOAW000E2ng9ps/preview",
+    story: "David shared his CodePath × Claude experience in a recorded video testimonial."
+  },
+  {
+    name: "Mitchell Doran",
+    course: "",
+    categories: ["built"],
+    quote: "Mitchell shared his CodePath × Claude experience in a recorded video testimonial.",
+    type: "video",
+    videoUrl: "https://drive.google.com/file/d/1nHNRaWmgOjE3fr6VCTzBTbC9PtQ_hqHR/preview",
+    story: "Mitchell shared his CodePath × Claude experience in a recorded video testimonial."
+  },
+];
+
+let activeFilter = 'all';
+let searchQuery = '';
+
+function getCatTags(s) {
+  return (s.categories || []).map(c => {
+    const def = CAT_LABELS[c];
+    return def ? `<span class="tag ${def.tag}">${def.label}</span>` : '';
+  }).join('');
+}
+
+function matchesFilter(s) {
+  if (activeFilter === 'video') return s.type.includes('video');
+  if (['built','ships','learns','arch','oss'].includes(activeFilter)) return (s.categories || []).includes(activeFilter);
+  return true;
+}
+
+function matchesSearch(s) {
+  if (!searchQuery) return true;
+  const q = searchQuery.toLowerCase();
+  return s.name.toLowerCase().includes(q) || s.story.toLowerCase().includes(q) || (s.course && s.course.toLowerCase().includes(q));
+}
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  const filtered = stories.filter(s => matchesFilter(s) && matchesSearch(s));
+  grid.innerHTML = '';
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="text-align:center;color:#6B6E9A;padding:80px 0;grid-column:1/-1">No stories match your search.</div>';
+    return;
+  }
+
+  filtered.forEach((s, _i) => {
+    const idx = stories.indexOf(s);
+    const card = document.createElement('div');
+    card.className = 'card' + (s.type.includes('video') ? ' has-video' : '');
+
+    let videoHtml = '';
+    if (s.videoUrl) {
+      videoHtml = `<div class="card-video-embed"><iframe src="${s.videoUrl}" allowfullscreen allow="autoplay; fullscreen"></iframe></div>`;
+    } else if (s.type.includes('video')) {
+      videoHtml = `<div class="card-video-placeholder"><div class="card-video-placeholder-inner"><div class="play-circle"><svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)"><polygon points="5,3 19,12 5,21"/></svg></div><div class="placeholder-label">Video coming soon</div></div></div>`;
+    }
+
+    const courseBadge = s.course ? `<span class="card-course">${s.course}</span>` : '';
+
+    let linksHtml = '';
+    if (s.links && !s.videoUrl) {
+      linksHtml = `<div class="card-links">${s.links.map(l => `<a class="card-link" href="${l.url}" target="_blank" onclick="event.stopPropagation()">↗ ${l.label}</a>`).join('')}</div>`;
+    }
+
+    card.innerHTML = `
+      ${videoHtml}
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-name">${s.name}</div>
+          ${courseBadge}
+        </div>
+        <p class="card-quote">"${s.quote}"</p>
+        <div class="cat-tags">${getCatTags(s)}</div>
+        ${linksHtml}
+        <div class="card-footer" style="margin-top:12px;padding-top:12px;">
+          ${s.story.length > 80 && !s.type.includes('video') ? `<button class="read-more-btn" onclick="openModal(${idx});event.stopPropagation()">Read full story →</button>` : `<button class="read-more-btn" onclick="openModal(${idx});event.stopPropagation()">View →</button>`}
+        </div>
+      </div>
+    `;
+
+    card.addEventListener('click', () => openModal(idx));
+    grid.appendChild(card);
+  });
+}
+
+function openModal(idx) {
+  const s = stories[idx];
+  document.getElementById('modal-name').textContent = s.name;
+
+  const badge = document.getElementById('modal-course-badge');
+  if (s.course) {
+    badge.textContent = s.course;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+
+  const videoWrap = document.getElementById('modal-video-wrap');
+  const iframe = document.getElementById('modal-iframe');
+  if (s.videoUrl) {
+    iframe.src = s.videoUrl;
+    videoWrap.classList.remove('hidden');
+    videoWrap.style.background = '';
+    videoWrap.querySelector('.modal-placeholder')?.remove();
+  } else if (s.type.includes('video')) {
+    iframe.src = '';
+    videoWrap.classList.remove('hidden');
+    videoWrap.style.background = 'linear-gradient(135deg, #062F54, #1B1C57)';
+    if (!videoWrap.querySelector('.modal-placeholder')) {
+      const ph = document.createElement('div');
+      ph.className = 'modal-placeholder';
+      ph.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;';
+      ph.innerHTML = '<div class="play-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)"><polygon points="5,3 19,12 5,21"/></svg></div><div class="placeholder-label">Video coming soon</div>';
+      videoWrap.appendChild(ph);
+    }
+  } else {
+    iframe.src = '';
+    videoWrap.classList.add('hidden');
+    videoWrap.querySelector('.modal-placeholder')?.remove();
+  }
+
+  document.getElementById('modal-text').textContent = s.story;
+
+  const linksEl = document.getElementById('modal-links');
+  if (s.links && s.links.length) {
+    linksEl.innerHTML = s.links.map(l => `<a class="modal-link" href="${l.url}" target="_blank">↗ ${l.label}</a>`).join('');
+    linksEl.style.display = 'flex';
+  } else {
+    linksEl.innerHTML = '';
+    linksEl.style.display = 'none';
+  }
+
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal')) closeModalBtn();
+}
+
+function closeModalBtn() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modal-iframe').src = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('search').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderGrid();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    renderGrid();
+  });
+});
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+
+renderGrid();
+</script>
+</body>
+</html>
